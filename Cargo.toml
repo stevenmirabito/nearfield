@@ -1,0 +1,7 @@
+[package]
+name = "nearfield"
+version = "0.1.0"
+authors = ["Steven Mirabito <steven@stevenmirabito.com>"]
+
+[dependencies]
+nearfield-sys = { path = "/Users/steven/Git/nearfield-sys" }
