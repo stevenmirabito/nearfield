@@ -44,7 +44,7 @@ impl Error {
         }
     }
 
-    pub fn from_sys(sys_error: i32) -> Error {
+    pub(crate) fn from_sys(sys_error: i32) -> Error {
         if sys_error == 0 {
             return Error::Success;
         }
