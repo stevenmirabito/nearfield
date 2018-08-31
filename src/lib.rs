@@ -9,9 +9,13 @@ use error::NFCResult;
 use device::ConnectionString;
 
 pub mod device;
+pub mod modulation;
+pub mod baud_rate;
+pub mod modulation_type;
+pub mod target;
 
 pub use error::Error;
-pub use device::Device;
+pub use device::{Device, Initiator};
 
 pub type Context = nearfield_sys::nfc_context;
 pub type Driver = nearfield_sys::nfc_driver;
@@ -56,9 +60,21 @@ impl NFC {
         }
     }
 
-    pub fn open(&mut self, conn_string: ConnectionString) -> Result<Device, Error> {
-        return Device::new(self.context, conn_string);
+    pub fn open_initiator(&mut self) -> Result<Initiator, Error> {
+        Initiator::new(self.context)
     }
+
+//    pub fn open_target(&mut self) -> Result<Target, Error> {
+//        Target::new(self.context);
+//    }
+
+    pub fn open_initiator_with_conn_string(&mut self, conn_string: ConnectionString) -> Result<Initiator, Error> {
+        Initiator::with_conn_string(self.context, conn_string)
+    }
+
+//    pub fn open_target_with_conn_string(&mut self, conn_string: ConnectionString) -> Result<Target, Error> {
+//        Target::with_conn_string(self.context, conn_string);
+//    }
 }
 
 impl Drop for NFC {
