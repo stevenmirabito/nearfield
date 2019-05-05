@@ -6,6 +6,7 @@ use std::fmt;
 
 pub(crate) type InternalModulation = nearfield_sys::nfc_modulation;
 
+#[derive(Debug, Clone, Eq, PartialEq)]
 pub struct Modulation {
     pub modulation_type: ModulationType,
     pub baud_rate: BaudRate,

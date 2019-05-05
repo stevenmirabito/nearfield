@@ -1,7 +1,6 @@
 extern crate nearfield_sys;
 
 use std::fmt;
-use modulation_type::InternalModulationType;
 
 pub(crate) type InternalBaudRate = nearfield_sys::nfc_baud_rate;
 

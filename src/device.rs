@@ -45,7 +45,7 @@ impl Device {
         let status = unsafe {
             nearfield_sys::nfc_device_get_supported_baud_rate(
                 &mut *self.device,
-                nmt.to_sys(),
+                nmt.into(),
                 &baud_rate,
             )
         } as i32;
@@ -152,7 +152,7 @@ impl Initiator {
         poll_period: u8,
     ) -> Result<Target, Error> {
         let int_mods: Vec<InternalModulation> =
-            modulations.iter().map(Modulation::to_sys).collect();
+            modulations.iter().map(Clone::clone).map(Modulation::into).collect();
         let mut raw_target: InternalTarget;
 
         raw_target = unsafe { mem::uninitialized() };

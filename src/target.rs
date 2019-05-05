@@ -12,9 +12,29 @@ pub struct Target {
     info: TargetInfo,
 }
 
+impl From<InternalTarget> for Target {
+    fn from(internal: InternalTarget) -> Self {
+        let modulation = Modulation::from(internal.nm);
+
+        Target {
+            modulation,
+            info: internal.nti,
+        }
+    }
+}
+
+impl Into<InternalTarget> for Target {
+    fn into(self) -> _ {
+        InternalTarget {
+            nm: self.modulation.clone().into(),
+            nti: self.info,
+        }
+    }
+}
+
 impl Target {
     pub(crate) fn from_sys(internal: InternalTarget) -> Target {
-        let modulation = Modulation::from_sys(internal.nm);
+        let modulation = Modulation::from(internal.nm);
 
         Target {
             modulation,
@@ -24,7 +44,7 @@ impl Target {
 
     pub(crate) fn to_sys(&self) -> InternalTarget {
         InternalTarget {
-            nm: self.modulation.to_sys(),
+            nm: self.modulation.clone().into(),
             nti: self.info,
         }
     }
