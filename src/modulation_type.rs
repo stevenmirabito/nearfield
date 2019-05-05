@@ -4,7 +4,7 @@ use std::fmt;
 
 pub type InternalModulationType = nearfield_sys::nfc_modulation_type;
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum ModulationType {
     ISO14443A,
     ISO14443B,
@@ -16,8 +16,8 @@ pub enum ModulationType {
     DEP,
 }
 
-impl ModulationType {
-    pub(crate) fn from_sys(internal: InternalModulationType) -> ModulationType {
+impl From<InternalModulationType> for ModulationType {
+    fn from(internal: InternalModulationType) -> Self {
         match internal {
             nearfield_sys::nfc_modulation_type::NMT_ISO14443A => ModulationType::ISO14443A,
             nearfield_sys::nfc_modulation_type::NMT_ISO14443B => ModulationType::ISO14443B,
@@ -29,8 +29,10 @@ impl ModulationType {
             nearfield_sys::nfc_modulation_type::NMT_DEP => ModulationType::DEP,
         }
     }
+}
 
-    pub(crate) fn to_sys(self) -> InternalModulationType {
+impl Into<InternalModulationType> for ModulationType {
+    fn into(self) -> InternalModulationType {
         match self {
             ModulationType::ISO14443A => nearfield_sys::nfc_modulation_type::NMT_ISO14443A,
             ModulationType::ISO14443B => nearfield_sys::nfc_modulation_type::NMT_ISO14443B,

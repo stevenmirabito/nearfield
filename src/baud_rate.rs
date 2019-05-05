@@ -4,17 +4,17 @@ use std::fmt;
 
 pub(crate) type InternalBaudRate = nearfield_sys::nfc_baud_rate;
 
-#[derive(Clone, Copy, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Copy, Debug, Eq, Hash, PartialEq)]
 pub enum BaudRate {
     K106,
     K212,
     K424,
     K847,
-    UNDEFINED
+    UNDEFINED,
 }
 
-impl BaudRate {
-    pub(crate) fn from_sys(internal: InternalBaudRate) -> BaudRate {
+impl From<InternalBaudRate> for BaudRate {
+    fn from(internal: InternalBaudRate) -> Self {
         match internal {
             nearfield_sys::nfc_baud_rate::NBR_106 => BaudRate::K106,
             nearfield_sys::nfc_baud_rate::NBR_212 => BaudRate::K212,
@@ -23,8 +23,10 @@ impl BaudRate {
             _ => BaudRate::UNDEFINED,
         }
     }
+}
 
-    pub(crate) fn to_sys(self) -> InternalBaudRate {
+impl Into<InternalBaudRate> for BaudRate {
+    fn into(self) -> InternalBaudRate {
         match self {
             BaudRate::K106 => nearfield_sys::nfc_baud_rate::NBR_106,
             BaudRate::K212 => nearfield_sys::nfc_baud_rate::NBR_212,
