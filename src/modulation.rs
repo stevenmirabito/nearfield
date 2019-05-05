@@ -1,8 +1,8 @@
 extern crate nearfield_sys;
 
-use std::fmt;
 use baud_rate::BaudRate;
 use modulation_type::ModulationType;
+use std::fmt;
 
 pub(crate) type InternalModulation = nearfield_sys::nfc_modulation;
 
@@ -11,18 +11,20 @@ pub struct Modulation {
     pub baud_rate: BaudRate,
 }
 
-impl Modulation {
-    pub(crate) fn from_sys(internal: InternalModulation) -> Modulation {
+impl From<InternalModulation> for Modulation {
+    fn from(internal: InternalModulation) -> Self {
         Modulation {
-            modulation_type: ModulationType::from_sys(internal.nmt),
-            baud_rate: BaudRate::from_sys(internal.nbr),
+            modulation_type: ModulationType::from(internal.nmt),
+            baud_rate: BaudRate::from(internal.nbr),
         }
     }
+}
 
-    pub(crate) fn to_sys(&self) -> InternalModulation {
+impl Into<InternalModulation> for Modulation {
+    fn into(self) -> InternalModulation {
         InternalModulation {
-            nmt: self.modulation_type.to_sys(),
-            nbr: self.baud_rate.to_sys(),
+            nmt: self.modulation_type.into(),
+            nbr: self.baud_rate.into(),
         }
     }
 }
@@ -34,22 +36,45 @@ impl fmt::Display for Modulation {
 }
 
 pub static COMMON: &'static [Modulation] = &[
-    Modulation { modulation_type: ModulationType::ISO14443A, baud_rate: BaudRate::K106 },
-    Modulation { modulation_type: ModulationType::ISO14443B, baud_rate: BaudRate::K106 },
-    Modulation { modulation_type: ModulationType::FELICA, baud_rate: BaudRate::K212 },
-    Modulation { modulation_type: ModulationType::FELICA, baud_rate: BaudRate::K424 },
-    Modulation { modulation_type: ModulationType::JEWEL, baud_rate: BaudRate::K106 },
+    Modulation {
+        modulation_type: ModulationType::ISO14443A,
+        baud_rate: BaudRate::K106,
+    },
+    Modulation {
+        modulation_type: ModulationType::ISO14443B,
+        baud_rate: BaudRate::K106,
+    },
+    Modulation {
+        modulation_type: ModulationType::FELICA,
+        baud_rate: BaudRate::K212,
+    },
+    Modulation {
+        modulation_type: ModulationType::FELICA,
+        baud_rate: BaudRate::K424,
+    },
+    Modulation {
+        modulation_type: ModulationType::JEWEL,
+        baud_rate: BaudRate::K106,
+    },
 ];
 
-pub static MIFARE: &'static [Modulation] = &[
-    Modulation { modulation_type: ModulationType::ISO14443A, baud_rate: BaudRate::K106 },
-];
+pub static MIFARE: &'static [Modulation] = &[Modulation {
+    modulation_type: ModulationType::ISO14443A,
+    baud_rate: BaudRate::K106,
+}];
 
 pub static FELICA: &'static [Modulation] = &[
-    Modulation { modulation_type: ModulationType::FELICA, baud_rate: BaudRate::K212 },
-    Modulation { modulation_type: ModulationType::FELICA, baud_rate: BaudRate::K424 },
+    Modulation {
+        modulation_type: ModulationType::FELICA,
+        baud_rate: BaudRate::K212,
+    },
+    Modulation {
+        modulation_type: ModulationType::FELICA,
+        baud_rate: BaudRate::K424,
+    },
 ];
 
-pub static JEWEL: &'static [Modulation] = &[
-    Modulation { modulation_type: ModulationType::JEWEL, baud_rate: BaudRate::K106 },
-];
+pub static JEWEL: &'static [Modulation] = &[Modulation {
+    modulation_type: ModulationType::JEWEL,
+    baud_rate: BaudRate::K106,
+}];

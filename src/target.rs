@@ -1,15 +1,15 @@
 extern crate nearfield_sys;
 
-use std::fmt;
 use modulation::Modulation;
 use modulation_type::ModulationType;
+use std::fmt;
 
 pub(crate) type InternalTarget = nearfield_sys::nfc_target;
 pub type TargetInfo = nearfield_sys::nfc_target_info;
 
 pub struct Target {
     pub modulation: Modulation,
-    info: TargetInfo
+    info: TargetInfo,
 }
 
 impl Target {
@@ -43,8 +43,8 @@ impl fmt::Display for Target {
                 output.push_str(&format!("\tATQA (SENS_RES): {:?}\n", info.abtAtqa));
                 output.push_str(&format!("\tUID (NFCID1): {:?}\n", info.btSak));
                 output.push_str(&format!("\tSAK (SEL_RES): {:?}\n", info.abtUid));
-            },
-            _ => output.push_str("\tModulation type not supported")
+            }
+            _ => output.push_str("\tModulation type not supported"),
         }
 
         write!(f, "{}", output)
